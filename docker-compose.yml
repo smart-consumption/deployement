@@ -1,0 +1,24 @@
+services:
+  review-db-postgres:
+    image: postgres:alpine
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ~/docker-volumes/personal/cqrs-postgres:/var/lib/postgresql
+      - ~/Desktop/tmp:/tmp
+    ports:
+      - '10001:5432'
+  
+  smart-consumption-review-ms:
+    build: ./smart-consumption-review-ms   
+    ports:
+      - '9001'
+    depends_on:
+      - review-db-postgres
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://review-db-postgres:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    container_name: smart-consumption-review-ms

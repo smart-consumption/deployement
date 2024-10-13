@@ -1,0 +1,15 @@
+[submodule "smart-consumption-review-ms"]
+    path = smart-consumption-review-ms
+    url = https://github.com/smart-consumption/smart-consumption-review-ms
+[submodule "smart-consumption-user-ms"]
+    path = smart-consumption-user-ms
+    url = https://github.com/smart-consumption/smart-consumption-user-ms
+[submodule "smart-consumption-offert-ms"]
+    path = smart-consumption-offert-ms
+    url = https://github.com/smart-consumption/smart-consumption-offert-ms
+[submodule "smart-consumption-product-ms"]
+    path = smart-consumption-product-ms
+    url = https://github.com/smart-consumption/smart-consumption-product-ms
+
+
+
