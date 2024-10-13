@@ -24,8 +24,6 @@ services:
   
   smart-consumption-review-ms:
     build: ./smart-consumption-review-ms   
-    ports:
-      - '9002'
     depends_on:
       - review-db-postgres
       - smart-consumption-register-ms
@@ -35,4 +33,3 @@ services:
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=postgres
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-    container_name: smart-consumption-review-ms
