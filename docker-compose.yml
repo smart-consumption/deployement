@@ -9,13 +9,27 @@ services:
       - ~/Desktop/tmp:/tmp
     ports:
       - '10001:5432'
+
+  smart-consumption-register-ms:
+    build: ./smart-consumption-register-ms
+    ports:
+      - "8761:8761"
+    container_name: smart-consumption-register-ms
+  
+  smart-consumption-api-gateway:
+    build: ./smart-consumption-api-gateway
+    ports:
+      - "8080:8080"
+    container_name: smart-consumption-api-gateway
   
   smart-consumption-review-ms:
     build: ./smart-consumption-review-ms   
     ports:
-      - '9001'
+      - '9002'
     depends_on:
       - review-db-postgres
+      - smart-consumption-register-ms
+      - smart-consumption-api-gateway
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://review-db-postgres:5432/postgres
       - SPRING_DATASOURCE_USERNAME=postgres
