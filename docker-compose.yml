@@ -1,4 +1,5 @@
 services:
+# Database
   review-db-postgres:
     image: postgres:alpine
     restart: always
@@ -9,19 +10,41 @@ services:
       - ~/Desktop/tmp:/tmp
     ports:
       - '10001:5432'
+  
+  product-db-postgres:
+    image: postgres:alpine
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ~/docker-volumes/personal/cqrs-postgres:/var/lib/postgresql
+      - ~/Desktop/tmp:/tmp
+    ports:
+      - '10002:5432'
 
+# Discovery Server
   smart-consumption-register-ms:
     build: ./smart-consumption-register-ms
     ports:
       - "8761:8761"
     container_name: smart-consumption-register-ms
-  
+
+# API Gateway
   smart-consumption-api-gateway:
     build: ./smart-consumption-api-gateway
     ports:
       - "8080:8080"
     container_name: smart-consumption-api-gateway
+
+# RabbitMQ
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    container_name: rabbitmq
   
+# Review Microservice
   smart-consumption-review-ms:
     build: ./smart-consumption-review-ms   
     depends_on:
@@ -30,6 +53,19 @@ services:
       - smart-consumption-api-gateway
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://review-db-postgres:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+# Product Microservice
+  smart-consumption-product-ms:
+    build: ./smart-consumption-product-ms
+    depends_on:
+      - product-db-postgres
+      - smart-consumption-register-ms
+      - smart-consumption-api-gateway
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://product-db-postgres:5432/postgres
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=postgres
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
