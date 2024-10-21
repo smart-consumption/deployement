@@ -21,6 +21,28 @@ services:
       - ~/Desktop/tmp:/tmp
     ports:
       - '10002:5432'
+  
+  offert-db-postgres:
+    image: postgres:alpine
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ~/docker-volumes/personal/cqrs-postgres:/var/lib/postgresql
+      - ~/Desktop/tmp:/tmp
+    ports:
+      - '10003:5432'
+  
+  user-db-postgres:
+    image: postgres:alpine
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ~/docker-volumes/personal/cqrs-postgres:/var/lib/postgresql
+      - ~/Desktop/tmp:/tmp
+    ports:
+      - '10004:5432'
 
 # Discovery Server
   smart-consumption-register-ms:
@@ -66,6 +88,32 @@ services:
       - smart-consumption-api-gateway
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://product-db-postgres:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+# Offert Microservice
+  smart-consumption-offert-ms:
+    build: ./smart-consumption-offert-ms
+    depends_on:
+      - offert-db-postgres
+      - smart-consumption-register-ms
+      - smart-consumption-api-gateway
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://offert-db-postgres:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+# User Microservice
+  smart-consumption-user-ms:
+    build: ./smart-consumption-user-ms
+    depends_on:
+      - user-db-postgres
+      - smart-consumption-register-ms
+      - smart-consumption-api-gateway
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://review-db-postgres:5432/postgres
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=postgres
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
