@@ -2,5 +2,11 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/smart-consumption-api-gateway" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/smart-consumption-offert-ms" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/smart-consumption-product-ms" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/smart-consumption-register-ms" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/smart-consumption-review-ms" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/smart-consumption-user-ms" vcs="Git" />
   </component>
 </project>
