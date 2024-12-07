@@ -57,6 +57,8 @@ services:
     ports:
       - "8080:8080"
     container_name: smart-consumption-api-gateway
+    environment:
+      - KEYCLOAK_URL=http://keycloak.local:9090
 
 # RabbitMQ
   rabbitmq:
